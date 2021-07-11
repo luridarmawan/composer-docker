@@ -2,8 +2,9 @@ FROM php:7.4-cli
 
 MAINTAINER Luri Darmawan <luri@carik.id>
 
-RUN apt-get update && apt-get install -y nano libmcrypt-dev libonig-dev libzip-dev exiftool unzip \
-    iputils-ping default-mysql-client --no-install-recommends \
+# remove: nano iputils-ping default-mysql-client
+RUN apt-get update && apt-get install -y libmcrypt-dev libonig-dev libzip-dev exiftool unzip \
+    --no-install-recommends \
     && docker-php-ext-configure exif \
     && docker-php-ext-install exif \
     && docker-php-ext-enable exif \
