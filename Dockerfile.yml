@@ -1,0 +1,20 @@
+FROM php:7.4-cli
+
+MAINTAINER Luri Darmawan <luri@carik.id>
+
+RUN apt-get update && apt-get install -y nano libmcrypt-dev libonig-dev libzip-dev exiftool unzip \
+    iputils-ping default-mysql-client --no-install-recommends \
+    && docker-php-ext-configure exif \
+    && docker-php-ext-install exif \
+    && docker-php-ext-enable exif \
+    && docker-php-ext-configure bcmath --enable-bcmath \
+#    && docker-php-ext-configure pcntl --enable-pcntl \
+#    && docker-php-ext-configure mbstring --enable-mbstring \
+    && docker-php-ext-install zip \
+    && docker-php-ext-install bcmath mbstring mysqli
+
+RUN docker-php-ext-install pdo pdo_mysql
+RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
